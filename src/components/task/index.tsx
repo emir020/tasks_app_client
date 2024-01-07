@@ -1,10 +1,10 @@
 import getRandomColor from "../../helpers/getRandomColor";
-import { Task as ITask } from "../../types";
+import useTaskStore from "../../store/tasks";
+import { Task as ITask, ITaskState } from "../../types";
 
 interface TaskProps {
   task: ITask;
   editTask: (id: string) => void;
-  deleteTask: (id: string) => void;
 }
 
 /**
@@ -27,7 +27,9 @@ interface TaskProps {
  *
  * @returns {JSX.Element} The rendered Task component.
  */
-const Task: React.FC<TaskProps> = ({ task, editTask, deleteTask }) => {
+const Task: React.FC<TaskProps> = ({ task, editTask }) => {
+  const { deleteTask } = useTaskStore((state: ITaskState) => state);
+
   return (
     <div
       key={task.id}

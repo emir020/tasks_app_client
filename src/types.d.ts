@@ -9,5 +9,6 @@ export interface Task {
 export interface ITaskState {
   loading: boolean;
   tasks: Task[];
-  fetchTasks: () => void;
+  fetchTasks: () => Promise<void>;
+  deleteTask: (id: string) => Promise<void>;
 }

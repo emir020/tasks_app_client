@@ -27,16 +27,6 @@ const TaskListPage = () => {
   }, []);
 
   /**
-   * Callback function to handle deleting a task.
-   * @param {string} id - The ID of the task to be deleted.
-   * @returns {void}
-   */
-  const handleDeleteTask = (id: string) => {
-    // Implement your delete task logic here
-    console.log(`Delete task with ID: ${id}`);
-  };
-
-  /**
    * Callback function to handle editing a task.
    * @param {string} id - The ID of the task to be edited.
    * @returns {void}
@@ -51,12 +41,7 @@ const TaskListPage = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {/* Map through tasks and render each task using the Task component */}
         {tasks.map((task: ITask) => (
-          <Task
-            key={task.id}
-            task={task}
-            editTask={handleEditTask}
-            deleteTask={handleDeleteTask}
-          />
+          <Task key={task.id} task={task} editTask={handleEditTask} />
         ))}
       </div>
     </div>
