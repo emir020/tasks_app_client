@@ -11,4 +11,5 @@ export interface ITaskState {
   tasks: Task[];
   fetchTasks: () => Promise<void>;
   deleteTask: (id: string) => Promise<void>;
+  createTask: (data: Partial<Task>) => Promise<void>;
 }

@@ -50,6 +50,20 @@ const useTaskStore = create<ITaskState>((set, get) => ({
       showApiResponse("deleted", false);
     }
   },
+
+  createTask: async (data: Partial<Task>) => {
+    try {
+      const response: AxiosResponse = await axios.post("/tasks", { ...data });
+
+      if (response.status === 201) {
+        set({ tasks: response.data.tasks });
+        showApiResponse("created");
+      }
+    } catch (err) {
+      console.log(err);
+      showApiResponse("created", false);
+    }
+  },
 }));
 
 export default useTaskStore;
