@@ -5,3 +5,9 @@ export interface Task {
   dueDate: string;
   completed: boolean;
 }
+
+export interface ITaskState {
+  loading: boolean;
+  tasks: Task[];
+  fetchTasks: () => void;
+}

@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import axios, { AxiosResponse } from "axios";
-import { Task as ITask } from "../../types";
+import { useEffect } from "react";
+import { Task as ITask, ITaskState } from "../../types";
 import Task from "../../components/task";
+import useTaskStore from "../../store/tasks";
 
 /**
  * TaskListPage Component
@@ -17,21 +17,13 @@ import Task from "../../components/task";
  */
 const TaskListPage = () => {
   // State to store the list of tasks
-  const [tasks, setTasks] = useState<ITask[]>([]);
+  const { tasks, fetchTasks } = useTaskStore((state: ITaskState) => state);
 
   /**
    * useEffect hook to fetch tasks from the API when the component mounts.
    */
   useEffect(() => {
-    axios("http://localhost:8000/api/v1/tasks")
-      .then((res: AxiosResponse) => {
-        if (res.status === 200) {
-          setTasks(res.data.tasks);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    fetchTasks();
   }, []);
 
   /**
