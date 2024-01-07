@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { ITaskState, Task } from "../../types";
 import axios, { AxiosResponse } from "axios";
+import { showApiResponse } from "../../common/apiResponses";
 
 /**
  * Task store using Zustand for managing tasks.
@@ -42,9 +43,11 @@ const useTaskStore = create<ITaskState>((set, get) => ({
         );
 
         set({ tasks: updatedTasks });
+        showApiResponse("deleted");
       }
     } catch (err) {
       console.log(err);
+      showApiResponse("deleted", false);
     }
   },
 }));
