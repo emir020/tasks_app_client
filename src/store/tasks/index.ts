@@ -64,6 +64,22 @@ const useTaskStore = create<ITaskState>((set, get) => ({
       showApiResponse("created", false);
     }
   },
+
+  updateTask: async (id: string, data: Partial<Task>) => {
+    try {
+      const response: AxiosResponse = await axios.patch(`/tasks/${id}`, {
+        ...data,
+      });
+
+      if (response.status === 200) {
+        set({ tasks: response.data.tasks });
+        showApiResponse("updated");
+      }
+    } catch (err) {
+      console.log(err);
+      showApiResponse("updated", false);
+    }
+  },
 }));
 
 export default useTaskStore;

@@ -1,23 +1,25 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import useTaskStore from "../../store/tasks";
-import { ITaskState } from "../../types";
+import { ITaskState, Task } from "../../types";
 
 /**
- * Props for the CreateTaskForm component.
+ * Props for the UpdateTaskForm component.
  */
-interface CreateTaskFormProps {
+interface UpdateTaskFormProps {
   isVisible: boolean;
   setIsVisible: Dispatch<SetStateAction<boolean>>;
+  selectedTask: Task | undefined;
 }
 
 /**
  * @description A React component for creating a new task.
  */
-const CreateTaskForm: React.FC<CreateTaskFormProps> = ({
+const UpdateTaskForm: React.FC<UpdateTaskFormProps> = ({
   isVisible,
   setIsVisible,
+  selectedTask,
 }) => {
-  const { createTask } = useTaskStore((state: ITaskState) => state);
+  const { updateTask } = useTaskStore((state: ITaskState) => state);
 
   // State to manage the form input values
   const [formState, setFormState] = useState<any>({
@@ -45,10 +47,18 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({
    */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await createTask(formState);
 
-    // Close the form after task creation
-    setIsVisible(false);
+    if (selectedTask) {
+      // Remove properties with empty string values from the formState
+      const filteredFormState = Object.fromEntries(
+        Object.entries(formState).filter(([key, value]) => value !== "")
+      );
+
+      await updateTask(selectedTask.id, filteredFormState);
+
+      // Close the form after task creation
+      setIsVisible(false);
+    }
   };
 
   return (
@@ -57,7 +67,7 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({
         <section className="bg-white dark:bg-gray-900 absolute h-screen w-screen top-0 left-0 z-[1000]">
           <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
             <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-              Add a new task
+              Update a task
             </h2>
             <form action="#" onSubmit={handleSubmit}>
               <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
@@ -67,7 +77,7 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({
                     htmlFor="name"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Task Title*
+                    Task Title
                   </label>
                   <input
                     type="text"
@@ -75,8 +85,8 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({
                     id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type task title..."
-                    required
                     onChange={handleChange}
+                    defaultValue={selectedTask?.name}
                   />
                 </div>
                 {/* Due Date */}
@@ -93,6 +103,7 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({
                     id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     onChange={handleChange}
+                    defaultValue={selectedTask?.dueDate}
                   />
                 </div>
                 {/* Description */}
@@ -109,7 +120,7 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({
                     rows={8}
                     className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Your description here"
-                    defaultValue={""}
+                    defaultValue={selectedTask?.description}
                     onChange={handleChange}
                   />
                 </div>
@@ -118,9 +129,9 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({
               <div className="flex items-center">
                 <button
                   type="submit"
-                  className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
+                  className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 disabled:bg-gray-500"
                 >
-                  Create Task
+                  Update Task
                 </button>
                 <button
                   type="submit"
@@ -138,4 +149,4 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({
   );
 };
 
-export default CreateTaskForm;
+export default UpdateTaskForm;

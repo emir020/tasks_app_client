@@ -4,6 +4,7 @@ import Task from "../../components/task";
 import useTaskStore from "../../store/tasks";
 import CreateTaskForm from "../../components/createTaskForm";
 import FloatingButton from "../../components/floatingButton";
+import UpdateTaskForm from "../../components/updateTaskForm";
 
 /**
  * TaskListPage Component
@@ -21,6 +22,8 @@ const TaskListPage = () => {
   // State to store the list of tasks
   const { tasks, fetchTasks } = useTaskStore((state: ITaskState) => state);
   const [showCreateTaskForm, setShowCreateTaskForm] = useState<boolean>(false);
+  const [showUpdateTaskForm, setShowUpdateTaskForm] = useState<boolean>(false);
+  const [selectedTask, setSelectedTask] = useState<ITask | undefined>();
 
   /**
    * useEffect hook to fetch tasks from the API when the component mounts.
@@ -31,12 +34,19 @@ const TaskListPage = () => {
 
   /**
    * Callback function to handle editing a task.
-   * @param {string} id - The ID of the task to be edited.
-   * @returns {void}
    */
   const handleEditTask = (id: string) => {
+    setShowUpdateTaskForm(true);
+
     // Implement your edit task logic here
     console.log(`Edit task with ID: ${id}`);
+
+    const taskCopy = [...tasks];
+    const taskIndex = taskCopy.findIndex((task: ITask) => task.id === id);
+
+    if (taskIndex === -1) return;
+
+    setSelectedTask(taskCopy[taskIndex]);
   };
 
   return (
@@ -52,6 +62,11 @@ const TaskListPage = () => {
         <CreateTaskForm
           isVisible={showCreateTaskForm}
           setIsVisible={setShowCreateTaskForm}
+        />
+        <UpdateTaskForm
+          isVisible={showUpdateTaskForm}
+          setIsVisible={setShowUpdateTaskForm}
+          selectedTask={selectedTask}
         />
       </div>
       <FloatingButton
