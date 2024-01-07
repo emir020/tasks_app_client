@@ -1,9 +1,7 @@
+import TaskListPage from "./pages/taskList";
+
 function App() {
-  return (
-    <div className="App">
-      <h1 className="text-3xl text-red-500">Hello from react.</h1>
-    </div>
-  );
+  return <TaskListPage />;
 }
 
 export default App;
