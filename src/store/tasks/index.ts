@@ -51,7 +51,12 @@ const useTaskStore = create<ITaskState>((set, get) => ({
     }
   },
 
-  createTask: async (data: Partial<Task>) => {
+  /**
+   * Creates a new task by sending a POST request to the server and updates the state.
+   * @param {Partial<Task>} data - Partial information about the task to be created.
+   * @returns {Promise<void>} A promise that resolves after creating and updating tasks.
+   */
+  createTask: async (data: Partial<Task>): Promise<void> => {
     try {
       const response: AxiosResponse = await axios.post("/tasks", { ...data });
 
@@ -65,7 +70,13 @@ const useTaskStore = create<ITaskState>((set, get) => ({
     }
   },
 
-  updateTask: async (id: string, data: Partial<Task>) => {
+  /**
+   * Updates an existing task by sending a PATCH request to the server and updating the state.
+   * @param {string} id - The ID of the task to update.
+   * @param {Partial<Task>} data - Partial information about the task to be updated.
+   * @returns {Promise<void>} A promise that resolves after updating the task and state.
+   */
+  updateTask: async (id: string, data: Partial<Task>): Promise<void> => {
     try {
       const response: AxiosResponse = await axios.patch(`/tasks/${id}`, {
         ...data,
