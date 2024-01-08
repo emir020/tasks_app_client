@@ -5,7 +5,10 @@ import axios from "axios";
 import "./index.css";
 import App from "./App";
 
-axios.defaults.baseURL = "http://localhost:8000/api/v1";
+axios.defaults.baseURL =
+  process.env.NODE_ENV === "development"
+    ? process.env.REACT_APP_DEV_BASE_URL
+    : process.env.REACT_APP_PROD_BASE_URL;
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
