@@ -38,7 +38,8 @@ const Task: React.FC<TaskProps> = ({ task, editTask }) => {
     >
       <h1 className="font-semibold text-xl mb-4">{task.name}</h1>
       <p className="mb-4">{task.description}</p>
-      <p className="mb-8">Due Date: {task.dueDate}</p>
+      <p className="mb-4">Due Date: {task.dueDate}</p>
+      <p className="mb-8">Completed: {task.completed ? "Yes" : "No"}</p>
 
       {/* Action Icons */}
       <div className="absolute bottom-2 right-2 flex space-x-2">

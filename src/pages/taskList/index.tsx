@@ -50,44 +50,45 @@ const TaskListPage = () => {
   };
 
   return (
-    <div className="h-screen">
-      <div className="container mx-auto p-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {/* Map through tasks and render each task using the Task component */}
-          {tasks.map((task: ITask) => (
-            <Task key={task.id} task={task} editTask={handleEditTask} />
-          ))}
+    <div className="overflow-hidden">
+      <div className="h-screen overflow-scroll">
+        <div className="container mx-auto p-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {/* Map through tasks and render each task using the Task component */}
+            {tasks.map((task: ITask) => (
+              <Task key={task.id} task={task} editTask={handleEditTask} />
+            ))}
+          </div>
         </div>
-
-        <CreateTaskForm
-          isVisible={showCreateTaskForm}
-          setIsVisible={setShowCreateTaskForm}
-        />
-        <UpdateTaskForm
-          isVisible={showUpdateTaskForm}
-          setIsVisible={setShowUpdateTaskForm}
-          selectedTask={selectedTask}
-        />
-      </div>
-      <FloatingButton
-        tooltip="Create Task!"
-        onClick={() => setShowCreateTaskForm(true)}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-6 h-6"
+        <FloatingButton
+          tooltip="Create Task!"
+          onClick={() => setShowCreateTaskForm(true)}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 4.5v15m7.5-7.5h-15"
-          />
-        </svg>
-      </FloatingButton>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4.5v15m7.5-7.5h-15"
+            />
+          </svg>
+        </FloatingButton>
+      </div>
+      <CreateTaskForm
+        isVisible={showCreateTaskForm}
+        setIsVisible={setShowCreateTaskForm}
+      />
+      <UpdateTaskForm
+        isVisible={showUpdateTaskForm}
+        setIsVisible={setShowUpdateTaskForm}
+        selectedTask={selectedTask}
+      />
     </div>
   );
 };

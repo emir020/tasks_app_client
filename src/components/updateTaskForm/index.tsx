@@ -26,19 +26,29 @@ const UpdateTaskForm: React.FC<UpdateTaskFormProps> = ({
     name: "",
     dueDate: new Date().toLocaleDateString(),
     description: "",
+    completed: false,
   });
 
   /**
-   * Handles changes in the form input values.
+   * Handles changes in the form input values, including the checkbox.
    */
   const handleChange = (
     e:
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
+    const { name, type } = e.target;
+
+    // Assert the event target type as HTMLInputElement
+    const target = e.target as HTMLInputElement;
+
+    // If the input is a checkbox, use the 'checked' property
+    // Otherwise, use the 'value' property
+    const newValue = type === "checkbox" ? target.checked : target.value;
+
     setFormState({
       ...formState,
-      [e.target.name]: e.target.value,
+      [name]: newValue,
     });
   };
 
@@ -125,6 +135,23 @@ const UpdateTaskForm: React.FC<UpdateTaskFormProps> = ({
                   />
                 </div>
               </div>
+              <div className="flex items-center mt-4">
+                <input
+                  name="completed"
+                  id="completed"
+                  defaultChecked={selectedTask?.completed}
+                  onChange={handleChange}
+                  type="checkbox"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                />
+                <label
+                  htmlFor="completed"
+                  className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Completed
+                </label>
+              </div>
+
               {/* Form Submission Buttons */}
               <div className="flex items-center">
                 <button
