@@ -11,7 +11,7 @@
  *
  * @returns {JSX.Element} The rendered TaskListPage component.
  */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Task as ITask, ITaskState } from "../../types";
 import Task from "../../components/task";
 import useTaskStore from "../../store/tasks";
@@ -19,12 +19,14 @@ import CreateTaskForm from "../../components/createTaskForm";
 import FloatingButton from "../../components/floatingButton";
 import UpdateTaskForm from "../../components/updateTaskForm";
 import Pagination from "../../components/pagination"; // Import the Pagination component
+import LoginForm from "../../components/loginForm";
 
 const TaskListPage = () => {
   // State and hooks to manage tasks and their fetching
   const { tasks, fetchTasks } = useTaskStore((state: ITaskState) => state);
   const [showCreateTaskForm, setShowCreateTaskForm] = useState<boolean>(false);
   const [showUpdateTaskForm, setShowUpdateTaskForm] = useState<boolean>(false);
+  const [loginFormVisible, setLoginFormVisible] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<ITask | undefined>();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const tasksPerPage = 8; // Set the number of tasks per page
@@ -112,6 +114,11 @@ const TaskListPage = () => {
         isVisible={showUpdateTaskForm}
         setIsVisible={setShowUpdateTaskForm}
         selectedTask={selectedTask}
+      />
+      {/* Modal form for login */}
+      <LoginForm
+        isVisible={loginFormVisible}
+        setIsVisible={setLoginFormVisible}
       />
     </div>
   );
