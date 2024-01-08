@@ -1,10 +1,13 @@
+import { Dispatch, SetStateAction } from "react";
 import getRandomColor from "../../helpers/getRandomColor";
 import useTaskStore from "../../store/tasks";
-import { Task as ITask, ITaskState } from "../../types";
+import { Task as ITask, ITaskState, IUserState } from "../../types";
+import useUserStore from "../../store/users";
 
 interface TaskProps {
   task: ITask;
   editTask: (id: string) => void;
+  showLoginForm: Dispatch<SetStateAction<boolean>>;
 }
 
 /**
@@ -27,8 +30,27 @@ interface TaskProps {
  *
  * @returns {JSX.Element} The rendered Task component.
  */
-const Task: React.FC<TaskProps> = ({ task, editTask }) => {
+const Task: React.FC<TaskProps> = ({ task, editTask, showLoginForm }) => {
   const { deleteTask } = useTaskStore((state: ITaskState) => state);
+  const { authenticated } = useUserStore((state: IUserState) => state);
+
+  const handleDelete = async (id: string) => {
+    if (!authenticated) {
+      showLoginForm(true);
+      return;
+    }
+
+    await deleteTask(id);
+  };
+
+  const handleEdit = async (id: string) => {
+    if (!authenticated) {
+      showLoginForm(true);
+      return;
+    }
+
+    await editTask(id);
+  };
 
   return (
     <div
@@ -45,7 +67,7 @@ const Task: React.FC<TaskProps> = ({ task, editTask }) => {
       <div className="absolute bottom-2 right-2 flex space-x-2">
         <button
           className="bg-blue-500 rounded-full p-3 flex items-center justify-center"
-          onClick={() => editTask(task.id)}
+          onClick={() => handleEdit(task.id)}
         >
           {/* Edit Icon SVG */}
           <svg
@@ -60,7 +82,7 @@ const Task: React.FC<TaskProps> = ({ task, editTask }) => {
         </button>
         <button
           className="bg-red-500 rounded-full p-3 flex items-center justify-center"
-          onClick={() => deleteTask(task.id)}
+          onClick={() => handleDelete(task.id)}
         >
           {/* Delete Icon SVG */}
           <svg

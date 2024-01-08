@@ -1,4 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
+import useUserStore from "../../store/users";
+import { IUserState } from "../../types";
 
 /**
  * Props for the LoginForm component.
@@ -12,6 +14,7 @@ interface LoginFormProps {
  * @description A React component for login.
  */
 const LoginForm: React.FC<LoginFormProps> = ({ isVisible, setIsVisible }) => {
+  const { login } = useUserStore((state: IUserState) => state);
   // State to manage the form input values
   const [formState, setFormState] = useState<any>({
     email: "",
@@ -31,8 +34,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ isVisible, setIsVisible }) => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    await login(formState.email);
+
+    setIsVisible(false);
   };
 
   return (

@@ -3,7 +3,11 @@ import React, { ReactNode, useState } from "react";
 
 interface FloatingButtonProps {
   children: ReactNode;
-  style?: React.CSSProperties;
+  // style?: React.CSSProperties;
+  // containerStyle?: React.CSSProperties;
+  style?: string;
+  containerStyle?: string;
+  tooltipStyle?: string;
   position?: "bottomRight" | "bottomLeft";
   tooltip?: string;
   onClick: () => void;
@@ -12,6 +16,8 @@ interface FloatingButtonProps {
 const FloatingButton: React.FC<FloatingButtonProps> = ({
   children,
   style,
+  containerStyle,
+  tooltipStyle,
   position = "bottomRight",
   tooltip,
   onClick,
@@ -36,7 +42,7 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
 
   // Main component rendering
   return (
-    <div className="fixed bottom-4 right-4 z-[10]">
+    <div className={`fixed bottom-4 right-4 z-[10] ${containerStyle}`}>
       <div
         style={{
           bottom: 12, // Adjusted bottom value
@@ -56,7 +62,7 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
         {/* Tooltip */}
         {isTooltipVisible && (
           <div
-            className={`absolute bg-gray-800 text-white p-2 flex items-center justify-center rounded-md ${getPositionClass()} top-[-70px]`}
+            className={`absolute bg-gray-800 text-white p-2 flex items-center justify-center rounded-md ${getPositionClass()} ${tooltipStyle}`}
           >
             {tooltip}
           </div>

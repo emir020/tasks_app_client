@@ -14,3 +14,9 @@ export interface ITaskState {
   createTask: (data: Partial<Task>) => Promise<void>;
   updateTask: (id: string, data: Partial<Task>) => Promise<void>;
 }
+
+export interface IUserState {
+  authenticated: boolean;
+  setAuthenticated: (value: boolean) => void;
+  login: (email: string) => Promise<void>;
+}
